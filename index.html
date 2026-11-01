@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#301c25">
+<title>MEGAN | A Little Music Collection</title>
+
+<style>
+:root {
+    --wine: #301c25;
+    --wine-light: #663b46;
+    --cream: #f5e9d5;
+    --muted: #c4aa9e;
+    --gold: #d4b18a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--wine);
+    color: var(--cream);
+    font-family: Georgia, "Microsoft YaHei", serif;
+}
+
+/* 胶片颗粒与复古背景 */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    opacity: .15;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 35%,
+        #100b10 100%
+    );
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 5px;
+}
+
+.page {
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 24px;
+}
+
+.hidden { display: none !important; }
+
+.topline {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+}
+
+.home-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 15px 0 0;
+    font-size: clamp(54px, 12vw, 100px);
+    letter-spacing: 9px;
+    font-weight: normal;
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin: 16px 0 25px;
+}
+
+/* 黑胶唱片 */
+.record-button {
+    position: relative;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    margin: 22px 0;
+}
+
+.record {
+    width: min(68vw, 300px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background:
+        repeating-radial-gradient(
+            circle,
+            #151316 0px,
+            #2b292b 2px,
+            #111013 4px,
+            #1c191d 7px
+        );
+    border: 3px solid #383037;
+    box-shadow:
+        0 25px 55px #0009,
+        inset 0 0 35px #0008;
+    animation: spin 12s linear infinite;
+}
+
+.record::before {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    border: 1px solid #ffffff16;
+    box-shadow:
+        0 0 0 12px #ffffff05,
+        0 0 0 25px #ffffff05,
+        0 0 0 39px #ffffff04;
+}
+
+.record-label {
+    width: 35%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 25%,
+        #a75d66, #703744 75%);
+    border: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    position: relative;
+    box-shadow: 0 0 0 5px #0004;
+}
+
+.record-label strong {
+    font-size: clamp(13px, 3vw, 19px);
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+.record-label small {
+    font-size: 7px;
+    letter-spacing: 1px;
+}
+
+.record-label::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #1a1418;
+    border: 1px solid var(--gold);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.record-button:hover .record {
+    animation-duration: 5s;
+}
+
+.hint {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 12px;
+}
+
+.dedication {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding-top: 20px;
+}
+
+/* 歌曲收藏页 */
+.music-page {
+    width: 100%;
+    max-width: 650px;
+    margin: 50px auto 0;
+}
+
+.back-button {
+    background: transparent;
+    border: 1px solid #c4aa9e77;
+    border-radius: 30px;
+    color: var(--cream);
+    padding: 10px 18px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 1px;
+}
+
+.music-heading {
+    margin: 50px 0 10px;
+    font-size: clamp(35px, 8vw, 65px);
+    font-weight: normal;
+    letter-spacing: 4px;
+}
+
+.music-description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 2;
+    margin-bottom: 35px;
+}
+
+.track-list {
+    border-top: 1px solid #c4aa9e55;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 22px 5px;
+    border-bottom: 1px solid #c4aa9e40;
+    color: var(--cream);
+    text-decoration: none;
+    transition: background .2s, padding .2s;
+}
+
+.track:hover {
+    background: #ffffff0b;
+    padding-left: 15px;
+}
+
+.track-number {
+    color: var(--gold);
+    font-size: 12px;
+    min-width: 25px;
+}
+
+.track-info { flex: 1; }
+
+.track-title {
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.track-artist {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.track-arrow {
+    font-size: 22px;
+    color: var(--gold);
+}
+
+.track.disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.track.disabled:hover {
+    background: transparent;
+    padding-left: 5px;
+}
+
+.artist-link {
+    display: inline-block;
+    margin-top: 35px;
+    color: var(--gold);
+    text-underline-offset: 6px;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+@media (max-width: 480px) {
+    .page { padding: 24px 18px; }
+    h1 { letter-spacing: 5px; }
+    .subtitle { letter-spacing: 1px; }
+    .record { width: min(72vw, 290px); }
+    .music-page { margin-top: 35px; }
+    .music-heading { margin-top: 35px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .record { animation: none; }
+    .track { transition: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 第一屏：黑胶唱片首页 -->
+<section class="page" id="home">
+    <header class="topline">
+        <span>PRIVATE RECORDS</span>
+        <span>VOL. 001 / 2026</span>
+    </header>
+
+    <main class="home-content">
+        <div class="eyebrow">An analog music experience</div>
+
+        <h1>MEGAN</h1>
+
+        <div class="subtitle">
+            A LITTLE MUSIC COLLECTION
+        </div>
+
+        <button
+            class="record-button"
+            id="openRecord"
+            aria-label="点击唱片，打开 Megan 音乐收藏"
+        >
+            <div class="record">
+                <div class="record-label">
+                    <strong>MEGAN</strong>
+                    <small>SIDE A · 001</small>
+                </div>
+            </div>
+        </button>
+
+        <div class="hint">✦ TOUCH THE RECORD ✦</div>
+
+        <p class="dedication">
+            一张为你收藏的唱片
+        </p>
+    </main>
+
+    <footer class="footer">
+        MADE WITH A LITTLE THOUGHT ♡
+    </footer>
+</section>
+
+<!-- 第二屏：歌曲列表 -->
+<section class="page hidden" id="music">
+    <header class="topline">
+        <span>PRIVATE RECORDS</span>
+        <span>SIDE A / TRACKLIST</span>
+    </header>
+
+    <main class="music-page">
+        <button class="back-button" id="backHome">
+            ← BACK TO RECORD
+        </button>
+
+        <h2 class="music-heading">The Tracklist.</h2>
+
+        <p class="music-description">
+            MEGAN · A LITTLE MUSIC COLLECTION
+            <br>
+            Some songs are worth keeping close.
+        </p>
+
+        <div class="track-list" id="trackList"></div>
+
+        <a
+            class="artist-link"
+            href="https://i2.y.qq.com/n3/other/pages/details/singer.html?singermid=002HeUXZ0qWn23"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            EXPLORE MEGAN ON QQ MUSIC ↗
+        </a>
+    </main>
+
+    <footer class="footer">
+        END OF SIDE A · KEEP LISTENING
+    </footer>
+</section>
+
+<script>
+/*
+ * 歌曲配置区
+ *
+ * 后续在这里填写真实歌曲名称和链接。
+ *
+ * 格式示例：
+ * {
+ *     title: "真实歌曲名",
+ *     artist: "Megan",
+ *     url: "对应歌曲的合法播放页面链接"
+ * }
+ *
+ * 注意：不要使用示例名称当成真实歌曲。
+ */
+
+
+const songs = [
+    {
+        title: "Unloveu (Explicit)",
+        artist: "KATSEYE",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=E8hcTrRCqvsM"
+    },
+    {
+        title: "Gameboy",
+        artist: "KATSEYE",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=3vaF9KJCq8WP"
+    },
+    {
+        title: "Animal",
+        artist: "KATSEYE",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=yF8iTxJCqzDo"
+    },
+    {
+        title: "Hot Girl Summer (Explicit)",
+        artist: "Megan Thee Stallion / Nicki Minaj / Ty Dolla $ign",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=Bsot4nZCqOYT"
+    },
+    {
+    title: "Savage Remix (feat. Beyoncé) (Remix|Explicit)",
+    artist: "Megan Thee Stallion / Beyoncé",
+    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=UWMVP3ZCqIOB"
+    },
+    {
+    title: "34+35 (Remix|Explicit)",
+    artist: "Ariana Grande / Doja Cat / Megan Thee Stallion",
+    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=hoI6hWZCqbs7"
+    },
+    {
+    title: "Sweetest Pie (Explicit)",
+    artist: "Megan Thee Stallion / Dua Lipa",
+    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=vp5zhCZCqk66"
+    },
+    {
+    title: "PINKY UP (Explicit)",
+    artist: "KATSEYE",
+    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=0av6eFZCqQz3"
+    }
+ 
+];
+
+
+
+const home = document.getElementById("home");
+const music = document.getElementById("music");
+const trackList = document.getElementById("trackList");
+
+function renderSongs() {
+    trackList.replaceChildren();
+
+    songs.forEach((song, index) => {
+        const hasLink =
+            /^https:\/\/.+/i.test(song.url);
+
+        const row = document.createElement(
+            hasLink ? "a" : "div"
+        );
+
+        row.className = hasLink
+            ? "track"
+            : "track disabled";
+
+        if (hasLink) {
+            row.href = song.url;
+            row.target = "_blank";
+            row.rel = "noopener noreferrer";
+        }
+
+        const number = document.createElement("span");
+        number.className = "track-number";
+        number.textContent = String(index + 1)
+            .padStart(2, "0");
+
+        const info = document.createElement("div");
+        info.className = "track-info";
+
+        const title = document.createElement("div");
+        title.className = "track-title";
+        title.textContent = song.title;
+
+        const artist = document.createElement("div");
+        artist.className = "track-artist";
+        artist.textContent = hasLink
+            ? song.artist + " · LISTEN ↗"
+            : song.artist + " · COMING SOON";
+
+        const arrow = document.createElement("span");
+        arrow.className = "track-arrow";
+        arrow.textContent = hasLink ? "↗" : "—";
+
+        info.append(title, artist);
+        row.append(number, info, arrow);
+        trackList.appendChild(row);
+    });
+}
+
+function showMusic() {
+    home.classList.add("hidden");
+    music.classList.remove("hidden");
+    window.scrollTo(0, 0);
+}
+
+function showHome() {
+    music.classList.add("hidden");
+    home.classList.remove("hidden");
+    window.scrollTo(0, 0);
+}
+
+document.getElementById("openRecord")
+    .addEventListener("click", showMusic);
+
+document.getElementById("backHome")
+    .addEventListener("click", showHome);
+
+renderSongs();
+</script>
+
+</body>
+</html>
