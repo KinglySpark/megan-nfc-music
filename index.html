@@ -5,52 +5,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#301c25">
+
 <title>MEGAN | A Little Music Collection</title>
 
 <style>
+
+/* =================================
+   01. 全局设置
+================================= */
+
 :root {
     --wine: #301c25;
-    --wine-light: #663b46;
+    --wine-dark: #1c1016;
+    --wine-light: #704653;
     --cream: #f5e9d5;
     --muted: #c4aa9e;
     --gold: #d4b18a;
+    --paper: #f3e8d6;
+    --ink: #62454a;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     margin: 0;
     min-height: 100vh;
-    background: var(--wine);
+
+    /* 使用真实制作的背景图片 */
+
+    background-color: var(--wine);
+
+    background-image:
+        linear-gradient(
+            rgba(35, 12, 19, 0.52),
+            rgba(35, 12, 19, 0.72)
+        ),
+       url("megan-christmas-bg.png")
+
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
     color: var(--cream);
-    font-family: Georgia, "Microsoft YaHei", serif;
+
+    font-family:
+        Georgia,
+        "Noto Serif SC",
+        "Songti SC",
+        "Microsoft YaHei",
+        serif;
 }
 
-/* 胶片颗粒与复古背景 */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 10;
-    opacity: .15;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+body.modal-open {
+    overflow: hidden;
 }
 
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 35%,
-        #100b10 100%
-    );
-}
-
-button, a {
+button,
+a {
     -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    font-family: inherit;
 }
 
 button:focus-visible,
@@ -59,129 +82,241 @@ a:focus-visible {
     outline-offset: 5px;
 }
 
+.hidden {
+    display: none !important;
+}
+
+/* 背景暗角 */
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+        ellipse at center,
+        transparent 35%,
+        rgba(15, 8, 12, .45) 100%
+    );
+}
+
+/* =================================
+   02. 页面基础布局
+================================= */
+
 .page {
     min-height: 100vh;
+    min-height: 100svh;
+
     position: relative;
     z-index: 1;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding: 30px 24px;
 }
 
-.hidden { display: none !important; }
-
 .topline {
     width: 100%;
-    max-width: 720px;
+    max-width: 850px;
+
     display: flex;
     justify-content: space-between;
+
     gap: 12px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    letter-spacing: 2.5px;
+}
+
+.footer {
+    text-align: center;
+
+    color: var(--muted);
+
     font-size: 10px;
     letter-spacing: 2px;
-    color: var(--muted);
+
+    padding: 25px 0 10px;
 }
+
+/* =================================
+   03. 首页
+================================= */
 
 .home-content {
     flex: 1;
+
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+
     text-align: center;
-    padding: 30px 0;
+
+    padding: 35px 0;
 }
 
 .eyebrow {
+    color: var(--gold);
+
     font-size: 11px;
     letter-spacing: 4px;
-    color: var(--gold);
+
     text-transform: uppercase;
 }
 
-h1 {
-    margin: 15px 0 0;
-    font-size: clamp(54px, 12vw, 100px);
+.home-title {
+    margin: 17px 0 0;
+
+    font-size: clamp(58px, 12vw, 105px);
+
     letter-spacing: 9px;
-    font-weight: normal;
+
     line-height: 1.1;
+
+    font-weight: normal;
+
+    color: var(--cream);
+
+    text-shadow: 0 5px 25px #0005;
 }
 
 .subtitle {
+    margin: 17px 0 25px;
+
+    color: var(--muted);
+
     font-size: 13px;
     letter-spacing: 3px;
-    color: var(--muted);
-    margin: 16px 0 25px;
 }
 
-/* 黑胶唱片 */
-.record-button {
+/* =================================
+   04. 黑胶唱片
+================================= */
+
+.record-stage {
     position: relative;
-    border: 0;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-    border-radius: 50%;
-    margin: 22px 0;
+
+    width: min(68vw, 310px);
+
+    margin: 28px 0 20px;
 }
 
-.record {
-    width: min(68vw, 300px);
-    aspect-ratio: 1;
+.record-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 0;
+
+    border: none;
     border-radius: 50%;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    touch-action: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.record-disc {
+    width: 100%;
+
+    aspect-ratio: 1;
+
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    background:
-        repeating-radial-gradient(
-            circle,
-            #151316 0px,
-            #2b292b 2px,
-            #111013 4px,
-            #1c191d 7px
-        );
-    border: 3px solid #383037;
+
+    border-radius: 50%;
+
+    background: repeating-radial-gradient(
+        circle,
+        #151316 0px,
+        #282528 2px,
+        #111013 4px,
+        #211d21 7px
+    );
+
+    border: 3px solid #393238;
+
     box-shadow:
         0 25px 55px #0009,
         inset 0 0 35px #0008;
-    animation: spin 12s linear infinite;
 }
 
-.record::before {
+/* 唱片纹路 */
+
+.record-disc::before {
     content: "";
+
     position: absolute;
+
     inset: 8%;
+
     border-radius: 50%;
-    border: 1px solid #ffffff16;
+
+    border: 1px solid #ffffff18;
+
     box-shadow:
         0 0 0 12px #ffffff05,
         0 0 0 25px #ffffff05,
         0 0 0 39px #ffffff04;
+
+    pointer-events: none;
 }
 
+/* 中央唱片标签 */
+
 .record-label {
-    width: 35%;
+    width: 36%;
+
     aspect-ratio: 1;
+
     border-radius: 50%;
-    background:
-        radial-gradient(circle at 30% 25%,
-        #a75d66, #703744 75%);
-    border: 3px solid var(--gold);
+
+    position: relative;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    position: relative;
-    box-shadow: 0 0 0 5px #0004;
+
+    gap: 7px;
+
+    background: radial-gradient(
+        circle at 30% 25%,
+        #a75d66,
+        #703744 78%
+    );
+
+    border: 3px solid var(--gold);
+
+    box-shadow:
+        0 0 0 5px #0004,
+        inset 0 0 15px #0003;
 }
 
 .record-label strong {
-    font-size: clamp(13px, 3vw, 19px);
-    letter-spacing: 2px;
+    font-size: clamp(13px, 3vw, 20px);
+
     font-weight: normal;
+
+    letter-spacing: 2px;
 }
 
 .record-label small {
@@ -191,369 +326,1633 @@ h1 {
 
 .record-label::after {
     content: "";
+
+    position: absolute;
+
     width: 7px;
     height: 7px;
+
     border-radius: 50%;
-    background: #1a1418;
+
+    background: #171216;
+
     border: 1px solid var(--gold);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* 点击后旋转一整圈 */
+
+.record-disc.is-spinning {
+    animation: spin-once .95s cubic-bezier(.2,.7,.2,1) both;
 }
 
-.record-button:hover .record {
-    animation-duration: 5s;
+/* 标签反向旋转，保持文字正向 */
+
+.record-disc.is-spinning .record-label {
+    animation: counter-spin-once .95s cubic-bezier(.2,.7,.2,1) both;
 }
 
-.hint {
+@keyframes spin-once {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes counter-spin-once {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+/* =================================
+   05. SMX 隐藏丝带
+================================= */
+
+.record-ribbon {
+    position: absolute;
+
+    right: -37px;
+    bottom: 17%;
+
+    z-index: 3;
+
+    width: 112px;
+
+    padding: 9px 5px;
+
+    text-align: center;
+
+    transform: rotate(-12deg);
+
+    background: linear-gradient(
+        90deg,
+        #9b744d,
+        #e0c39a,
+        #a77b53
+    );
+
+    color: #39242a;
+
+    font-size: 9px;
+    letter-spacing: 1.5px;
+
+    box-shadow: 0 5px 14px #0005;
+
+    pointer-events: none;
+}
+
+.record-hint {
+    margin-top: 22px;
+
     color: var(--gold);
+
     font-size: 12px;
     letter-spacing: 3px;
-    margin-top: 12px;
 }
 
 .dedication {
-    margin-top: 30px;
+    max-width: 400px;
+
+    margin-top: 28px;
+
     color: var(--muted);
-    font-size: 13px;
-    letter-spacing: 2px;
+
+    font-size: 14px;
+    line-height: 1.9;
+
+    letter-spacing: .5px;
 }
 
-.footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding-top: 20px;
-}
+/* =================================
+   06. 歌曲收藏页
+================================= */
 
-/* 歌曲收藏页 */
 .music-page {
     width: 100%;
-    max-width: 650px;
-    margin: 50px auto 0;
+    max-width: 680px;
+
+    margin: 45px auto 0;
 }
 
 .back-button {
-    background: transparent;
+    background: #301c2580;
+
     border: 1px solid #c4aa9e77;
+
     border-radius: 30px;
+
     color: var(--cream);
-    padding: 10px 18px;
+
+    padding: 11px 20px;
+
     cursor: pointer;
-    font-family: inherit;
+
+    font-size: 13px;
     letter-spacing: 1px;
+
+    transition: background .2s;
+}
+
+.back-button:hover {
+    background: #ffffff18;
+}
+
+.music-eyebrow {
+    margin-top: 55px;
+
+    color: var(--gold);
+
+    font-size: 10px;
+    letter-spacing: 3px;
 }
 
 .music-heading {
-    margin: 50px 0 10px;
-    font-size: clamp(35px, 8vw, 65px);
+    margin: 15px 0 12px;
+
+    font-size: clamp(42px, 8vw, 67px);
+
+    letter-spacing: 1px;
+
     font-weight: normal;
-    letter-spacing: 4px;
 }
 
 .music-description {
     color: var(--muted);
+
     font-size: 13px;
     line-height: 2;
-    margin-bottom: 35px;
+
+    letter-spacing: .8px;
+
+    margin-bottom: 30px;
 }
 
+.track-meta {
+    display: flex;
+    justify-content: space-between;
+
+    color: var(--gold);
+
+    font-size: 10px;
+    letter-spacing: 2px;
+
+    padding: 12px 3px;
+
+    border-bottom: 1px solid #d4b18a55;
+}
+
+/* 歌曲列表 */
+
 .track-list {
-    border-top: 1px solid #c4aa9e55;
+    display: flex;
+    flex-direction: column;
+
+    background: rgba(39, 19, 27, .68);
+
+    border-bottom: 1px solid #d4b18a55;
+
+    backdrop-filter: blur(8px);
 }
 
 .track {
+    min-height: 88px;
+
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 22px 5px;
-    border-bottom: 1px solid #c4aa9e40;
+
+    gap: 18px;
+
+    padding: 17px 14px;
+
+    border-bottom: 1px solid #d4b18a30;
+
     color: var(--cream);
+
     text-decoration: none;
-    transition: background .2s, padding .2s;
+
+    transition:
+        background .25s ease,
+        padding .25s ease;
+}
+
+.track:last-child {
+    border-bottom: none;
 }
 
 .track:hover {
-    background: #ffffff0b;
-    padding-left: 15px;
+    background: #ffffff0c;
+
+    padding-left: 22px;
 }
 
 .track-number {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #d4b18a88;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     color: var(--gold);
-    font-size: 12px;
-    min-width: 25px;
+
+    font-size: 11px;
 }
 
-.track-info { flex: 1; }
+.track-info {
+    flex: 1;
+
+    min-width: 0;
+}
 
 .track-title {
-    font-size: 16px;
-    letter-spacing: 1px;
+    color: var(--cream);
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    letter-spacing: .4px;
 }
 
 .track-artist {
     color: var(--muted);
-    font-size: 11px;
-    margin-top: 8px;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+
+    margin-top: 5px;
 }
 
 .track-arrow {
-    font-size: 22px;
     color: var(--gold);
+
+    font-size: 20px;
+
+    transition: transform .2s;
 }
 
-.track.disabled {
-    opacity: .6;
-    cursor: default;
-}
-
-.track.disabled:hover {
-    background: transparent;
-    padding-left: 5px;
+.track:hover .track-arrow {
+    transform: translate(3px, -3px);
 }
 
 .artist-link {
     display: inline-block;
-    margin-top: 35px;
+
+    margin-top: 32px;
+
     color: var(--gold);
+
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    line-height: 2;
+
     text-underline-offset: 6px;
-    font-size: 13px;
-    line-height: 1.8;
 }
 
-@media (max-width: 480px) {
-    .page { padding: 24px 18px; }
-    h1 { letter-spacing: 5px; }
-    .subtitle { letter-spacing: 1px; }
-    .record { width: min(72vw, 290px); }
-    .music-page { margin-top: 35px; }
-    .music-heading { margin-top: 35px; }
+.collection-footer {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    margin-top: 40px;
 }
+
+/* =================================
+   07. 隐藏信件弹窗
+================================= */
+
+.letter-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px 16px;
+
+    overflow-y: auto;
+
+    background: rgba(17, 9, 13, .90);
+
+    backdrop-filter: blur(12px);
+}
+
+.letter-dialog {
+    width: min(100%, 460px);
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 18px;
+
+    margin: auto;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: -12px;
+    right: 0;
+
+    z-index: 10;
+
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid #d4b18a66;
+
+    border-radius: 50%;
+
+    color: var(--cream);
+
+    background: #ffffff08;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+/* =================================
+   08. 复古信封
+================================= */
+
+.envelope-button {
+    position: relative;
+
+    width: min(100%, 340px);
+
+    height: 215px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    perspective: 900px;
+
+    filter: drop-shadow(0 20px 30px #0007);
+}
+
+.envelope-body {
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        145deg,
+        #754956,
+        #44232f
+    );
+
+    border: 1px solid #d4b18a99;
+}
+
+/* 信封里的信纸露出部分 */
+
+.envelope-letter-peek {
+    position: absolute;
+
+    left: 8%;
+    right: 8%;
+
+    top: 8%;
+
+    height: 65%;
+
+    background: #eee0c9;
+
+    z-index: 1;
+
+    transition: transform .6s ease;
+}
+
+.envelope-flap {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 62%;
+
+    z-index: 4;
+
+    background: linear-gradient(
+        145deg,
+        #8a5b68,
+        #593440
+    );
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    transform-origin: top center;
+
+    transition: transform .55s ease;
+
+    backface-visibility: hidden;
+}
+
+.envelope-pocket {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    background: linear-gradient(
+        145deg,
+        #6c414e,
+        #472631
+    );
+
+    clip-path: polygon(
+        0 0,
+        50% 58%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+
+    border-bottom: 1px solid #d4b18a88;
+}
+
+/* 封蜡 */
+
+.wax-seal {
+    position: absolute;
+
+    left: 50%;
+    top: 56%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 5;
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle at 35% 30%,
+        #bc8187,
+        #773b49 78%
+    );
+
+    border: 2px solid #dfbf95;
+
+    color: var(--cream);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    letter-spacing: 2px;
+
+    box-shadow: 0 6px 18px #0005;
+}
+
+.envelope-text {
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 6;
+
+    white-space: nowrap;
+
+    color: var(--gold);
+
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.envelope-caption {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    text-align: center;
+}
+
+/* 信封打开动画 */
+
+.envelope-button.opened .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.envelope-button.opened .envelope-letter-peek {
+    transform: translateY(-20px);
+}
+
+/* =================================
+   09. 奶油白信纸
+================================= */
+
+.letter-paper {
+    width: min(100%, 410px);
+
+    max-height: min(78vh, 760px);
+
+    overflow-y: auto;
+
+    padding: 38px 30px 32px;
+
+    position: relative;
+
+    color: var(--ink);
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f0e3,
+            #e9d9c1
+        );
+
+    border: 1px solid #c5a47c;
+
+    box-shadow:
+        0 25px 65px #0008,
+        inset 0 0 30px #b9956c20;
+
+    animation: letter-reveal .65s ease both;
+}
+
+/* 信纸内部边框 */
+
+.letter-paper::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 9px;
+
+    border: 1px solid #bda17d88;
+
+    pointer-events: none;
+}
+
+@keyframes letter-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.paper-date {
+    color: #997653;
+
+    text-align: center;
+
+    font-size: 10px;
+
+    letter-spacing: 2.5px;
+
+    margin-bottom: 22px;
+}
+
+.letter-title {
+    margin: 0;
+
+    text-align: center;
+
+    color: #603c45;
+
+    font-size: clamp(30px, 8vw, 42px);
+
+    font-weight: normal;
+
+    line-height: 1.2;
+}
+
+.paper-divider {
+    width: 75px;
+
+    height: 1px;
+
+    margin: 23px auto;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #c49c6e,
+        transparent
+    );
+}
+
+.letter-paragraph {
+    margin: 0 0 17px;
+
+    color: #65494a;
+
+    font-size: 14px;
+
+    line-height: 2.15;
+
+    text-align: left;
+
+    text-indent: 2em;
+}
+
+.letter-ending {
+    margin-top: 24px;
+
+    text-align: center;
+
+    text-indent: 0;
+
+    color: #80505a;
+
+    font-size: 23px;
+
+    font-family: Georgia, serif;
+
+    font-style: italic;
+}
+
+.letter-sign {
+    margin-top: 17px;
+
+    color: #9b7958;
+
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+
+    line-height: 1.8;
+
+    text-align: center;
+}
+
+.letter-signature {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #bda17d88;
+
+    color: #997653;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+.letter-close {
+    display: block;
+
+    margin: 27px auto 0;
+
+    padding: 10px 30px;
+
+    border: 1px solid #b88f67;
+
+    background: transparent;
+
+    color: #62434a;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition: background .2s;
+}
+
+.letter-close:hover {
+    background: #b88f6718;
+}
+
+/* =================================
+   10. 手机端适配
+================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        background-attachment: scroll;
+        background-position: center top;
+        background-size: cover;
+    }
+
+    .page {
+        padding: 24px 18px;
+    }
+
+    .topline {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+    }
+
+    .home-title {
+        letter-spacing: 5px;
+    }
+
+    .subtitle {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .record-stage {
+        width: min(72vw, 290px);
+    }
+
+    .record-ribbon {
+        right: -18px;
+        width: 98px;
+        font-size: 8px;
+    }
+
+    .dedication {
+        max-width: 300px;
+        font-size: 12px;
+    }
+
+    .music-page {
+        margin-top: 30px;
+    }
+
+    .music-eyebrow {
+        margin-top: 40px;
+    }
+
+    .track {
+        min-height: 82px;
+        padding: 14px 9px;
+        gap: 12px;
+    }
+
+    .track-title {
+        font-size: 13px;
+    }
+
+    .track-artist {
+        font-size: 9px;
+    }
+
+    .letter-modal {
+        padding: 18px 12px;
+        align-items: center;
+    }
+
+    .envelope-button {
+        height: 195px;
+    }
+
+    .letter-paper {
+        padding: 32px 22px 25px;
+        max-height: 82vh;
+    }
+
+    .letter-title {
+        font-size: 32px;
+    }
+
+    .letter-paragraph {
+        font-size: 13px;
+        line-height: 2.05;
+    }
+
+    .letter-signature {
+        font-size: 9px;
+    }
+}
+
+/* 减少动态效果设置 */
 
 @media (prefers-reduced-motion: reduce) {
-    .record { animation: none; }
-    .track { transition: none; }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+
+    .record-disc.is-spinning,
+    .record-disc.is-spinning .record-label {
+        animation: none;
+    }
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- 第一屏：黑胶唱片首页 -->
+
+<!-- =================================
+     第一屏：首页
+================================= -->
+
 <section class="page" id="home">
+
     <header class="topline">
         <span>PRIVATE RECORDS</span>
         <span>VOL. 001 / 2026</span>
     </header>
 
     <main class="home-content">
-        <div class="eyebrow">An analog music experience</div>
 
-        <h1>MEGAN</h1>
+        <div class="eyebrow">
+            AN ANALOG MUSIC EXPERIENCE
+        </div>
+
+        <h1 class="home-title">
+            MEGAN
+        </h1>
 
         <div class="subtitle">
             A LITTLE MUSIC COLLECTION
         </div>
 
-        <button
-            class="record-button"
-            id="openRecord"
-            aria-label="点击唱片，打开 Megan 音乐收藏"
-        >
-            <div class="record">
-                <div class="record-label">
-                    <strong>MEGAN</strong>
-                    <small>SIDE A · 001</small>
-                </div>
-            </div>
-        </button>
 
-        <div class="hint">✦ TOUCH THE RECORD ✦</div>
+        <!-- 黑胶唱片 -->
+
+        <div class="record-stage">
+
+            <button
+                class="record-button"
+                id="recordButton"
+                aria-label="点击唱片打开歌曲列表，长按打开隐藏信件"
+            >
+
+                <div class="record-disc" id="recordDisc">
+
+                    <div class="record-label">
+
+                        <small>SIDE A · 001</small>
+
+                        <strong>MEGAN</strong>
+
+                    </div>
+
+                </div>
+
+            </button>
+
+
+            <!-- 隐藏 SMX 彩带 -->
+
+            <div class="record-ribbon">
+                smx · 24.12
+            </div>
+
+        </div>
+
+
+        <div class="record-hint">
+            ✦ TOUCH THE RECORD ✦
+        </div>
+
 
         <p class="dedication">
-            一张为你收藏的唱片
+            Some songs make a moment last a little longer.
         </p>
+
     </main>
 
     <footer class="footer">
-        MADE WITH A LITTLE THOUGHT ♡
+        MADE WITH A LITTLE THOUGHT
     </footer>
+
 </section>
 
-<!-- 第二屏：歌曲列表 -->
+
+
+<!-- =================================
+     第二屏：歌曲列表
+================================= -->
+
 <section class="page hidden" id="music">
+
     <header class="topline">
         <span>PRIVATE RECORDS</span>
         <span>SIDE A / TRACKLIST</span>
     </header>
 
     <main class="music-page">
-        <button class="back-button" id="backHome">
+
+        <button
+            class="back-button"
+            id="backHome"
+        >
             ← BACK TO RECORD
         </button>
 
-        <h2 class="music-heading">The Tracklist.</h2>
+
+        <div class="music-eyebrow">
+            SIDE A · THE COLLECTION
+        </div>
+
+        <h2 class="music-heading">
+            The Tracklist.
+        </h2>
 
         <p class="music-description">
             MEGAN · A LITTLE MUSIC COLLECTION
             <br>
-            Some songs are worth keeping close.
+            Eight songs, one little collection.
         </p>
 
-        <div class="track-list" id="trackList"></div>
+
+        <div class="track-meta">
+            <span>TRACK</span>
+            <span>08 SONGS</span>
+        </div>
+
+
+        <!-- JavaScript 自动生成歌曲 -->
+
+        <div
+            class="track-list"
+            id="trackList"
+        ></div>
+
 
         <a
             class="artist-link"
-            href="https://i2.y.qq.com/n3/other/pages/details/singer.html?singermid=002HeUXZ0qWn23"
+            href="https://i2.y.qq.com/n3/other/pages/details/singer.html?singermid=002HeUXZ0qWn23&ADTAG=myqq"
             target="_blank"
             rel="noopener noreferrer"
         >
             EXPLORE MEGAN ON QQ MUSIC ↗
         </a>
+
+
+        <div class="collection-footer">
+            EIGHT SONGS · ONE LITTLE COLLECTION
+        </div>
+
     </main>
 
     <footer class="footer">
         END OF SIDE A · KEEP LISTENING
     </footer>
+
 </section>
 
-<script>
-/*
- * 歌曲配置区
- *
- * 后续在这里填写真实歌曲名称和链接。
- *
- * 格式示例：
- * {
- *     title: "真实歌曲名",
- *     artist: "Megan",
- *     url: "对应歌曲的合法播放页面链接"
- * }
- *
- * 注意：不要使用示例名称当成真实歌曲。
- */
 
+
+<!-- =================================
+     第三屏：隐藏信件
+================================= -->
+
+<div
+    class="letter-modal hidden"
+    id="letterModal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="A little Christmas note"
+>
+
+    <div class="letter-dialog">
+
+
+        <button
+            class="modal-close"
+            id="modalClose"
+            aria-label="关闭信件"
+        >
+            ×
+        </button>
+
+
+        <!-- 初始显示信封 -->
+
+        <button
+            class="envelope-button"
+            id="envelopeButton"
+            aria-label="打开平安夜信件"
+        >
+
+            <div class="envelope-body"></div>
+
+            <div class="envelope-letter-peek"></div>
+
+            <div class="envelope-flap"></div>
+
+            <div class="envelope-pocket"></div>
+
+            <div class="wax-seal">
+                24
+            </div>
+
+            <div class="envelope-text">
+                A LITTLE NOTE
+            </div>
+
+        </button>
+
+
+        <div
+            class="envelope-caption"
+            id="envelopeCaption"
+        >
+            A SMALL NOTE FOR CHRISTMAS EVE
+            <br>
+            TAP TO OPEN
+        </div>
+
+
+        <!-- 点击信封后显示信纸 -->
+
+        <article
+            class="letter-paper hidden"
+            id="letterPaper"
+        >
+
+            <div class="paper-date">
+                DECEMBER 24 · CHRISTMAS EVE
+            </div>
+
+
+            <h2 class="letter-title">
+                Letters from a winter evening.
+            </h2>
+
+
+            <div class="paper-divider"></div>
+
+
+            <p class="letter-paragraph">
+                这一年，日子总是在课程、消息和各种小事之间悄悄过去。
+            </p>
+
+            <p class="letter-paragraph">
+                偶尔停下来，听一首喜欢的歌，好像就能给普通的一天留下一点特别的空白。
+            </p>
+
+            <p class="letter-paragraph">
+                所以，挑了几首歌，放进这张小小的收藏里。它们有不同的节奏，也来自不同的时刻，希望其中总有几首，恰好合你的心意。
+            </p>
+
+
+            <div class="paper-divider"></div>
+
+
+            <p class="letter-paragraph">
+                愿接下来的日子，有好听的歌作伴，有想去的地方，也有许多值得期待的小事。
+            </p>
+
+
+            <p class="letter-ending">
+                Merry Christmas.
+            </p>
+
+
+            <div class="letter-sign">
+                May your days be filled with lovely melodies.
+            </div>
+
+
+            <div class="letter-signature">
+
+                <span>
+                    A LITTLE MUSIC COLLECTION
+                </span>
+
+                <span>
+                    smx · 24.12
+                </span>
+
+            </div>
+
+
+            <button
+                class="letter-close"
+                id="closeLetter"
+            >
+                CLOSE
+            </button>
+
+        </article>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================
+     第四部分：JavaScript
+================================= -->
+
+<script>
+
+/* =================================
+   01. 歌曲数据
+   保留原来的 8 首歌和 QQ 音乐链接
+================================= */
 
 const songs = [
+
     {
         title: "Unloveu (Explicit)",
         artist: "KATSEYE",
         url: "https://c6.y.qq.com/base/fcgi-bin/u?__=E8hcTrRCqvsM"
     },
+
     {
         title: "Gameboy",
         artist: "KATSEYE",
         url: "https://c6.y.qq.com/base/fcgi-bin/u?__=3vaF9KJCq8WP"
     },
+
     {
         title: "Animal",
         artist: "KATSEYE",
         url: "https://c6.y.qq.com/base/fcgi-bin/u?__=yF8iTxJCqzDo"
     },
+
     {
         title: "Hot Girl Summer (Explicit)",
         artist: "Megan Thee Stallion / Nicki Minaj / Ty Dolla $ign",
         url: "https://c6.y.qq.com/base/fcgi-bin/u?__=Bsot4nZCqOYT"
     },
+
     {
-    title: "Savage Remix (feat. Beyoncé) (Remix|Explicit)",
-    artist: "Megan Thee Stallion / Beyoncé",
-    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=UWMVP3ZCqIOB"
+        title: "Savage Remix (feat. Beyoncé) (Remix|Explicit)",
+        artist: "Megan Thee Stallion / Beyoncé",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=UWMVP3ZCqIOB"
     },
+
     {
-    title: "34+35 (Remix|Explicit)",
-    artist: "Ariana Grande / Doja Cat / Megan Thee Stallion",
-    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=hoI6hWZCqbs7"
+        title: "34+35 (Remix|Explicit)",
+        artist: "Ariana Grande / Doja Cat / Megan Thee Stallion",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=hoI6hWZCqbs7"
     },
+
     {
-    title: "Sweetest Pie (Explicit)",
-    artist: "Megan Thee Stallion / Dua Lipa",
-    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=vp5zhCZCqk66"
+        title: "Sweetest Pie (Explicit)",
+        artist: "Megan Thee Stallion / Dua Lipa",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=vp5zhCZCqk66"
     },
+
     {
-    title: "PINKY UP (Explicit)",
-    artist: "KATSEYE",
-    url: "https://c6.y.qq.com/base/fcgi-bin/u?__=0av6eFZCqQz3"
+        title: "PINKY UP (Explicit)",
+        artist: "KATSEYE",
+        url: "https://c6.y.qq.com/base/fcgi-bin/u?__=0av6eFZCqQz3"
     }
- 
+
 ];
 
 
+/* =================================
+   02. 获取页面元素
+================================= */
 
 const home = document.getElementById("home");
+
 const music = document.getElementById("music");
+
+const recordButton = document.getElementById("recordButton");
+
+const recordDisc = document.getElementById("recordDisc");
+
 const trackList = document.getElementById("trackList");
 
+const letterModal = document.getElementById("letterModal");
+
+const envelopeButton = document.getElementById("envelopeButton");
+
+const envelopeCaption = document.getElementById("envelopeCaption");
+
+const letterPaper = document.getElementById("letterPaper");
+
+
+/* =================================
+   03. 自动生成歌曲列表
+================================= */
+
 function renderSongs() {
+
     trackList.replaceChildren();
 
     songs.forEach((song, index) => {
-        const hasLink =
-            /^https:\/\/.+/i.test(song.url);
 
-        const row = document.createElement(
-            hasLink ? "a" : "div"
-        );
+        const row = document.createElement("a");
 
-        row.className = hasLink
-            ? "track"
-            : "track disabled";
+        row.className = "track";
 
-        if (hasLink) {
-            row.href = song.url;
-            row.target = "_blank";
-            row.rel = "noopener noreferrer";
-        }
+        row.href = song.url;
+
+        row.target = "_blank";
+
+        row.rel = "noopener noreferrer";
+
 
         const number = document.createElement("span");
+
         number.className = "track-number";
-        number.textContent = String(index + 1)
-            .padStart(2, "0");
+
+        number.textContent = String(index + 1).padStart(2, "0");
+
 
         const info = document.createElement("div");
+
         info.className = "track-info";
 
+
         const title = document.createElement("div");
+
         title.className = "track-title";
+
         title.textContent = song.title;
 
+
         const artist = document.createElement("div");
+
         artist.className = "track-artist";
-        artist.textContent = hasLink
-            ? song.artist + " · LISTEN ↗"
-            : song.artist + " · COMING SOON";
+
+        artist.textContent = song.artist + " · LISTEN ↗";
+
 
         const arrow = document.createElement("span");
+
         arrow.className = "track-arrow";
-        arrow.textContent = hasLink ? "↗" : "—";
+
+        arrow.textContent = "↗";
+
 
         info.append(title, artist);
+
         row.append(number, info, arrow);
+
         trackList.appendChild(row);
+
     });
+
 }
+
+
+/* =================================
+   04. 页面切换
+================================= */
 
 function showMusic() {
+
     home.classList.add("hidden");
+
     music.classList.remove("hidden");
+
     window.scrollTo(0, 0);
+
 }
+
 
 function showHome() {
+
     music.classList.add("hidden");
+
     home.classList.remove("hidden");
+
+    recordDisc.classList.remove("is-spinning");
+
+    recordButton.disabled = false;
+
     window.scrollTo(0, 0);
+
 }
 
-document.getElementById("openRecord")
-    .addEventListener("click", showMusic);
 
 document.getElementById("backHome")
     .addEventListener("click", showHome);
 
+
+/* =================================
+   05. 点击唱片
+   默认静止，点击后旋转一圈
+================================= */
+
+let isOpening = false;
+
+function playRecord() {
+
+    if (isOpening) return;
+
+    isOpening = true;
+
+    recordButton.disabled = true;
+
+
+    const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+    if (reducedMotion) {
+
+        showMusic();
+
+        isOpening = false;
+
+        recordButton.disabled = false;
+
+        return;
+
+    }
+
+
+    recordDisc.classList.remove("is-spinning");
+
+    void recordDisc.offsetWidth;
+
+    recordDisc.classList.add("is-spinning");
+
+
+    setTimeout(() => {
+
+        recordDisc.classList.remove("is-spinning");
+
+        showMusic();
+
+        isOpening = false;
+
+        recordButton.disabled = false;
+
+    }, 1000);
+
+}
+
+
+/* =================================
+   06. 长按 1.2 秒触发信件
+================================= */
+
+let pressTimer = null;
+
+let longPressFired = false;
+
+let suppressNextClick = false;
+
+let suppressResetTimer = null;
+
+
+function startLongPress(event) {
+
+    if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+    }
+
+    if (isOpening) return;
+
+    clearTimeout(pressTimer);
+
+    longPressFired = false;
+
+
+    pressTimer = setTimeout(() => {
+
+        longPressFired = true;
+
+        suppressNextClick = true;
+
+        openLetterModal();
+
+    }, 1200);
+
+}
+
+
+function endLongPress() {
+
+    clearTimeout(pressTimer);
+
+    pressTimer = null;
+
+
+    if (suppressNextClick) {
+
+        clearTimeout(suppressResetTimer);
+
+        suppressResetTimer = setTimeout(() => {
+
+            suppressNextClick = false;
+
+        }, 700);
+
+    }
+
+}
+
+
+recordButton.addEventListener(
+    "pointerdown",
+    startLongPress
+);
+
+window.addEventListener(
+    "pointerup",
+    endLongPress
+);
+
+window.addEventListener(
+    "pointercancel",
+    endLongPress
+);
+
+
+recordButton.addEventListener(
+    "pointerleave",
+    () => {
+        clearTimeout(pressTimer);
+    }
+);
+
+
+recordButton.addEventListener(
+    "contextmenu",
+    event => event.preventDefault()
+);
+
+
+/* 普通点击与长按分开处理 */
+
+recordButton.addEventListener("click", event => {
+
+    if (suppressNextClick || longPressFired) {
+
+        event.preventDefault();
+
+        suppressNextClick = false;
+
+        longPressFired = false;
+
+        clearTimeout(suppressResetTimer);
+
+        return;
+
+    }
+
+    playRecord();
+
+});
+
+
+/* =================================
+   07. 打开隐藏信件弹窗
+================================= */
+
+function openLetterModal() {
+
+    letterModal.classList.remove("hidden");
+
+    document.body.classList.add("modal-open");
+
+
+    envelopeButton.classList.remove("hidden");
+
+    envelopeButton.classList.remove("opened");
+
+    letterPaper.classList.add("hidden");
+
+    envelopeCaption.classList.remove("hidden");
+
+}
+
+
+/* =================================
+   08. 点击信封展开信纸
+================================= */
+
+let letterOpened = false;
+
+envelopeButton.addEventListener("click", () => {
+
+    if (letterOpened) return;
+
+    letterOpened = true;
+
+    envelopeButton.classList.add("opened");
+
+    envelopeCaption.classList.add("hidden");
+
+
+    setTimeout(() => {
+
+        envelopeButton.classList.add("hidden");
+
+        letterPaper.classList.remove("hidden");
+
+    }, 500);
+
+});
+
+
+/* =================================
+   09. 关闭信件
+================================= */
+
+function closeLetterModal() {
+
+    letterModal.classList.add("hidden");
+
+    document.body.classList.remove("modal-open");
+
+
+    envelopeButton.classList.remove("hidden");
+
+    envelopeButton.classList.remove("opened");
+
+    letterPaper.classList.add("hidden");
+
+    envelopeCaption.classList.remove("hidden");
+
+
+    letterOpened = false;
+
+}
+
+
+document.getElementById("closeLetter")
+    .addEventListener("click", closeLetterModal);
+
+
+document.getElementById("modalClose")
+    .addEventListener("click", closeLetterModal);
+
+
+letterModal.addEventListener("click", event => {
+
+    if (event.target === letterModal) {
+
+        closeLetterModal();
+
+    }
+
+});
+
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape" && !letterModal.classList.contains("hidden")) {
+
+        closeLetterModal();
+
+    }
+
+});
+
+
+/* =================================
+   10. 初始化
+================================= */
+
 renderSongs();
+
 </script>
 
 </body>
